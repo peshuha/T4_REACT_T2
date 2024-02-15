@@ -1,19 +1,20 @@
 import styles from "./External.module.css"
 import Layout from "../../components/Layout/Layout.jsx";
-import {useEffect, useRef, useState} from "react";
-import People from "../../components/SWAPI/people/people.jsx";
-import {CSWAPI as CWAPI, CSWAPI} from "../../classes/swapi.js";
+import {useEffect, useState} from "react";
+import People from "../../components/People/People.jsx";
+import url from "../../constants/url.js";
+import DlgPeople from "../../components/DlgPeople/DlgPeople.jsx";
 
 export default function External (){
+  const [person, setPerson] = useState(null)
 
     // Получаем всех
     const [peoples, setPeoples] = useState(null)
     useEffect(() => {
-            fetch(CSWAPI.UrlPeople)
+            fetch(url)
                 .then((r) => r.json())
                 .then((data) => {
-                    console.log("data", CSWAPI.PeopleList(data));
-                    setPeoples(CSWAPI.PeopleList(data))
+                    setPeoples(data.results)
                 })
             return () => {
                 setPeoples([])
@@ -28,10 +29,11 @@ export default function External (){
             {
                 peoples &&
                 peoples.map((people, idx)=>{
-                    return <People key={idx + "-people"}  people={people}  ></People>
+                    return <People key={idx + "-people"}  people={people} onClick={() => setPerson(people)} />
                 })
             }
             </div>
+            {person && <DlgPeople person={person} onClick={() => setPerson(null)}/>}
         </Layout>
     </>
 }
