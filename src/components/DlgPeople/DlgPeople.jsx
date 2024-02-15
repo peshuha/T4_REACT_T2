@@ -1,4 +1,3 @@
-import {useEffect, useState} from "react";
 import styles from "./DlgPeople.module.css";
 
 export default function DlgPeople({person, onClick}) {
